@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block titolo %}Primo avvio{% endblock %}
+{% block contenuto %}
+<h1>Primo avvio: crea l'amministratore</h1>
+<p>Scegli nome utente e password di chi potrà inserire gli appuntamenti. Annotali in un posto sicuro.</p>
+<form method="post" class="modulo">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+ <label for="username">Nome utente</label>
+ <input type="text" id="username" name="username" autocomplete="username" required>
+ <label for="password">Password (almeno 8 caratteri)</label>
+ <input type="password" id="password" name="password" autocomplete="new-password" required>
+ <label for="password2">Ripeti la password</label>
+ <input type="password" id="password2" name="password2" autocomplete="new-password" required>
+ <p class="azioni"><button class="btn ok" type="submit">Crea amministratore</button>
+ <a class="btn sec" href="{{ url_for('main.index') }}">Torna al calendario</a></p>
+</form>
+{% endblock %}

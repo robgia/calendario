@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block titolo %}Calendario{% endblock %} – Calendario appuntamenti</title>
+<link rel="manifest" href="{{ url_for('main.manifest') }}">
+<meta name="theme-color" content="#0B3D91">
+<link rel="icon" href="{{ url_for('static', filename='icona-192.png') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='stile.css') }}">
+<script src="{{ url_for('static', filename='accessibilita.js') }}"></script>
+</head>
+<body>
+<a class="salta" href="#contenuto">Vai al contenuto</a>
+<header>
+ <div class="contenitore barra">
+  <a class="logo" href="{{ url_for('main.index') }}">Calendario appuntamenti</a>
+  <div class="strumenti" role="group" aria-label="Opzioni di lettura">
+   <button type="button" class="btn sec" id="piu">Testo più grande</button>
+   <button type="button" class="btn sec" id="meno">Testo più piccolo</button>
+   <button type="button" class="btn sec" id="contrasto" aria-pressed="false">Alto contrasto</button>
+  </div>
+  <nav aria-label="Accesso">
+   {% if is_admin %}
+   <span class="badge-admin">Amministratore</span>
+   <form method="post" action="{{ url_for('main.logout') }}" class="inline">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button class="btn sec">Esci</button>
+   </form>
+   {% else %}<a class="btn sec" href="{{ url_for('main.login') }}">Accesso amministratore</a>{% endif %}
+  </nav>
+ </div>
+</header>
+<main id="contenuto" class="contenitore" tabindex="-1">
+{% for cat, msg in get_flashed_messages(with_categories=true) %}
+ <p class="msg {{ cat }}" role="{{ 'alert' if cat == 'errore' else 'status' }}"><strong>{{ 'Attenzione:' if cat == 'errore' else 'Fatto:' }}</strong> {{ msg }}</p>
+{% endfor %}
+{% block contenuto %}{% endblock %}
+</main>
+<footer class="contenitore"><p>Le date e gli orari sono solo da consultare.</p></footer>
+</body>
+</html>

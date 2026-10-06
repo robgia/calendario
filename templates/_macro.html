@@ -1,0 +1,11 @@
+{% macro scheda(a, admin) %}
+<li class="scheda" style="border-left-color: {{ a.cat_colore }}">
+ <p class="ora">{{ a.ora_inizio|ora }}{% if a.ora_fine %} – {{ a.ora_fine|ora }}{% endif %}</p>
+ <p class="tit"><a href="{{ url_for('main.dettaglio', id=a.id) }}">{{ a.titolo }}</a></p>
+ {% if a.luogo %}<p>Luogo: {{ a.luogo }}</p>{% endif %}
+ <p>{{ a.cat_simbolo }} {{ a.cat_nome }}</p>
+ {% if admin %}<p class="azioni">
+  <a class="btn sec" href="{{ url_for('main.modifica', id=a.id) }}">Modifica</a>
+  <a class="btn pe" href="{{ url_for('main.elimina', id=a.id) }}">Elimina</a></p>{% endif %}
+</li>
+{% endmacro %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% from "_macro.html" import scheda %}
+{% block titolo %}{{ nome_mese }} {{ anno }}{% endblock %}
+{% block contenuto %}
+<h1>{{ nome_mese }} {{ anno }}</h1>
+<div class="nav-mese">
+ <a class="btn" href="{{ url_for('main.index', anno=prec[0], mese=prec[1]) }}">← Mese precedente</a>
+ <a class="btn" href="{{ url_for('main.index') }}">Oggi</a>
+ <a class="btn" href="{{ url_for('main.index', anno=succ[0], mese=succ[1]) }}">Mese successivo →</a>
+</div>
+{% if is_admin %}<p><a class="btn ok" href="{{ url_for('main.nuovo') }}">Nuovo appuntamento</a></p>{% endif %}
+<table class="calendario">
+ <caption class="solo-lettori">Calendario di {{ nome_mese }} {{ anno }}. Scegli un giorno per vedere gli appuntamenti.</caption>
+ <thead><tr>{% for g in giorni_brevi %}<th scope="col" abbr="{{ giorni[loop.index0] }}">{{ g }}</th>{% endfor %}</tr></thead>
+ <tbody>
+ {% for sett in settimane %}<tr>
+  {% for g in sett %}{% set lista = per_giorno.get(g, []) %}
+  <td class="{{ 'altro' if g.month != mese }} {{ 'oggi' if g == oggi }}">
+   <a href="{{ url_for('main.giorno', iso=g.isoformat()) }}" aria-label="{{ g|data_it }}{{ ', oggi' if g == oggi }}: {{ lista|length if lista else 'nessun' }} {{ 'appuntamento' if lista|length == 1 else 'appuntamenti' }}">
+    <span class="num">{{ g.day }}</span>
+    {% if g == oggi %}<span class="etichetta-oggi">OGGI</span>{% endif %}
+    {% if lista %}
+    <span class="conteggio">● {{ lista|length }}</span>
+    <span class="titoli">{% for a in lista[:2] %}<span>{{ a.cat_simbolo }} {{ a.ora_inizio|ora }} {{ a.titolo }}</span>{% endfor %}{% if lista|length > 2 %}<span>+ altri {{ lista|length - 2 }}</span>{% endif %}</span>
+    {% endif %}
+   </a>
+  </td>{% endfor %}
+ </tr>{% endfor %}
+ </tbody>
+</table>
+<p class="legenda"><strong>Tipi di appuntamento:</strong>
+ {% for k, c in CATEGORIE.items() %}<span>{{ c[2] }} {{ c[0] }}</span>{% endfor %}</p>
+
+<h2>Prossimi appuntamenti</h2>
+{% for data, lista in gruppi %}
+ <h3>{{ data|data_it }}</h3>
+ <ul class="elenco">{% for a in lista %}{{ scheda(a, is_admin) }}{% endfor %}</ul>
+{% else %}
+ <p>Non ci sono appuntamenti in programma.</p>
+{% endfor %}
+{% endblock %}

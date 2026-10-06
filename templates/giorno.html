@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% from "_macro.html" import scheda %}
+{% block titolo %}{{ g|data_it }}{% endblock %}
+{% block contenuto %}
+<h1>{{ g|data_it }}</h1>
+<div class="nav-mese">
+ <a class="btn" href="{{ url_for('main.giorno', iso=ieri.isoformat()) }}">← Giorno prima</a>
+ <a class="btn" href="{{ url_for('main.index', anno=g.year, mese=g.month) }}">Torna al mese</a>
+ <a class="btn" href="{{ url_for('main.giorno', iso=domani.isoformat()) }}">Giorno dopo →</a>
+</div>
+{% if is_admin %}<p><a class="btn ok" href="{{ url_for('main.nuovo', data=g.isoformat()) }}">Nuovo appuntamento in questo giorno</a></p>{% endif %}
+{% if lista %}<ul class="elenco">{% for a in lista %}{{ scheda(a, is_admin) }}{% endfor %}</ul>
+{% else %}<p>Non ci sono appuntamenti in questo giorno.</p>{% endif %}
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block titolo %}Accesso amministratore{% endblock %}
+{% block contenuto %}
+<h1>Accesso amministratore</h1>
+<form method="post" class="modulo">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+ <label for="username">Nome utente</label>
+ <input type="text" id="username" name="username" autocomplete="username" required>
+ <label for="password">Password</label>
+ <input type="password" id="password" name="password" autocomplete="current-password" required>
+ <p class="azioni">
+  <button class="btn" type="submit">Entra</button>
+  <a class="btn sec" href="{{ url_for('main.index') }}">Torna al calendario</a>
+ </p>
+</form>
+{% endblock %}

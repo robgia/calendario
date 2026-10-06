@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block titolo %}{{ titolo_pagina }}{% endblock %}
+{% block contenuto %}
+<h1>{{ titolo_pagina }}</h1>
+<form method="post" class="modulo" novalidate>
+ <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+ <label for="titolo">Titolo (obbligatorio)</label>
+ <input type="text" id="titolo" name="titolo" maxlength="120" value="{{ v.titolo }}" required>
+ <label for="data">Data (obbligatoria)</label>
+ <input type="date" id="data" name="data" value="{{ v.data }}" required>
+ <label for="ora_inizio">Ora di inizio (obbligatoria)</label>
+ <input type="time" id="ora_inizio" name="ora_inizio" value="{{ v.ora_inizio }}" required>
+ <label for="ora_fine">Ora di fine (facoltativa)</label>
+ <input type="time" id="ora_fine" name="ora_fine" value="{{ v.ora_fine }}">
+ <label for="luogo">Luogo (facoltativo)</label>
+ <input type="text" id="luogo" name="luogo" maxlength="160" value="{{ v.luogo }}">
+ <label for="note">Note (facoltative)</label>
+ <textarea id="note" name="note" rows="4">{{ v.note }}</textarea>
+ <fieldset><legend>Tipo di appuntamento</legend>
+ {% for k, c in CATEGORIE.items() %}
+  <label class="radio"><input type="radio" name="categoria" value="{{ k }}" {{ 'checked' if v.categoria == k }}> {{ c[2] }} {{ c[0] }}</label>
+ {% endfor %}
+ </fieldset>
+ <p class="azioni">
+  <button class="btn ok" type="submit">Salva appuntamento</button>
+  <a class="btn sec" href="{{ url_for('main.index') }}">Annulla</a>
+ </p>
+</form>
+{% endblock %}

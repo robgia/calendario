@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block titolo %}Elimina appuntamento{% endblock %}
+{% block contenuto %}
+<h1>Sei sicuro di voler eliminare questo appuntamento?</h1>
+<p class="scheda"><strong>{{ a.titolo }}</strong><br>{{ a.data|data_it }}, ore {{ a.ora_inizio|ora }}</p>
+<p>Questa operazione non si può annullare.</p>
+<form method="post" class="azioni">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+ <button class="btn pe" type="submit">Sì, elimina</button>
+ <a class="btn sec" href="{{ url_for('main.dettaglio', id=a.id) }}">No, annulla</a>
+</form>
+{% endblock %}

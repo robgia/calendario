@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block titolo %}{{ a.titolo }}{% endblock %}
+{% block contenuto %}
+<h1>{{ a.titolo }}</h1>
+<dl class="dettaglio">
+ <dt>Quando</dt><dd>{{ a.data|data_it }}, ore {{ a.ora_inizio|ora }}{% if a.ora_fine %} fino alle {{ a.ora_fine|ora }}{% endif %}</dd>
+ {% if a.luogo %}<dt>Luogo</dt><dd>{{ a.luogo }}</dd>{% endif %}
+ <dt>Tipo</dt><dd>{{ a.cat_simbolo }} {{ a.cat_nome }}</dd>
+ {% if a.note %}<dt>Note</dt><dd>{{ a.note }}</dd>{% endif %}
+</dl>
+<p class="azioni">
+ <a class="btn" href="{{ url_for('main.index', anno=a.data.year, mese=a.data.month) }}">Torna al calendario</a>
+ {% if is_admin %}
+ <a class="btn sec" href="{{ url_for('main.modifica', id=a.id) }}">Modifica</a>
+ <a class="btn pe" href="{{ url_for('main.elimina', id=a.id) }}">Elimina</a>
+ {% endif %}
+</p>
+{% endblock %}
